@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const useLocalStorage = (keyName: string) => {
   const [value, setValue] = useState(() => {
-    const storedValue = localStorage.getItem(keyName) || '';
+    const storedValue = localStorage.getItem(keyName) || "";
     try {
       const parsedValue = JSON.parse(storedValue);
       return parsedValue;

@@ -5,6 +5,7 @@ import { Request, Response, NextFunction } from "express";
 import { reIssueAccessToken } from "../service/auth.service";
 import log from "../logger";
 
+// Validate schema on upcoming request
 export const validate =
   (schema: AnySchema) =>
   async (req: Request, res: Response, next: NextFunction) => {
@@ -22,6 +23,7 @@ export const validate =
     }
   };
 
+// Give Cors access to given domains
 export const alloweCredentials = (
   req: Request,
   res: Response,
@@ -35,6 +37,7 @@ export const alloweCredentials = (
   next();
 };
 
+//Validate if user is accessible on given request
 export const requiresUser = async (
   req: Request,
   res: Response,
@@ -49,6 +52,7 @@ export const requiresUser = async (
   return next();
 };
 
+//Extract user and attach on req object
 export const extractUser = async (
   req: Request,
   res: Response,
@@ -69,8 +73,6 @@ export const extractUser = async (
   if (user) {
     // @ts-ignore
     req.user = user;
-    // @ts-ignore
-    console.log("reqq", req.user);
 
     return next();
   }

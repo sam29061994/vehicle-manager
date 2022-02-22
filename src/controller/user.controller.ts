@@ -15,7 +15,7 @@ export const createUserHandler = async (req: Request, res: Response) => {
         error: "User already exist",
       });
     }
-        
+
     const newUser = await createUser(req.body);
     res.status(201).json({
       status: "success",
@@ -39,7 +39,10 @@ export const deleteUserHandler = async (req: Request, res: Response) => {
       status: "succes",
     });
   } catch (e) {
-    res.status(409).send((e as Error).message);
+    res.status(500).json({
+      status: "error",
+      error: e,
+    });
   }
 };
 
@@ -54,7 +57,10 @@ export const findUserHandler = async (req: Request, res: Response) => {
       },
     });
   } catch (e) {
-    res.status(409).send((e as Error).message);
+    res.status(500).json({
+      status: "error",
+      error: e,
+    });
   }
 };
 
@@ -68,6 +74,9 @@ export const getUsers = async (req: Request, res: Response) => {
       },
     });
   } catch (e) {
-    res.status(409).send((e as Error).message);
+    res.status(500).json({
+      status: "error",
+      error: e,
+    });
   }
 };

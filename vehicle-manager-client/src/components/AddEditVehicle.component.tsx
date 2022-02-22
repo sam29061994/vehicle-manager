@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { VehicleInterface } from "./Home.component";
-import { DatePicker, Select, Space, Input, Button } from "antd";
-
+import { DatePicker, Select, Space, Input, Button, Tooltip } from "antd";
 import { CloseCircleTwoTone, CheckCircleTwoTone } from "@ant-design/icons";
-
 import carBrands from "../data/brands.json";
 import moment from "moment";
 
@@ -20,7 +18,7 @@ interface AddVehicleProps {
   addButtonDisabled?: boolean;
 }
 const AddVehicle = ({
-  _id = "",
+  _id,
   editMode,
   onSubmit,
   company: companyProp,
@@ -75,8 +73,9 @@ const AddVehicle = ({
           }}
         />
         <Select
-          placeholder="Set as Primary"
+          placeholder="Primary?"
           optionFilterProp="children"
+          style={{ width: 100 }}
           value={isPrimary}
           onChange={(e) => setIsPrimary(e)}
           filterOption={(input, option) =>
@@ -107,24 +106,36 @@ const AddVehicle = ({
           </Button>
         ) : (
           <>
-            <CloseCircleTwoTone
-              style={{ fontSize: "25px", margin: "0 10px" }}
-              onClick={() => onCancelEdit(_id)}
-            />
-            <CheckCircleTwoTone
-              style={{ fontSize: "25px", margin: "0 10px" }}
-              onClick={() => {
-                if (
-                  _id &&
-                  model &&
-                  company &&
-                  year &&
-                  typeof isPrimary === "boolean"
-                ) {
-                  onSumbitEdit({ _id, model, company, year, isPrimary });
-                }
-              }}
-            />{" "}
+            <Tooltip title="Cancel Modification">
+              <CloseCircleTwoTone
+                style={{
+                  fontSize: "25px",
+                  margin: "0 10px",
+                  cursor: "pointer",
+                }}
+                onClick={() => _id && onCancelEdit(_id)}
+              />
+            </Tooltip>
+            <Tooltip title="Save Modification">
+              <CheckCircleTwoTone
+                style={{
+                  fontSize: "25px",
+                  margin: "0 10px",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  if (
+                    _id &&
+                    model &&
+                    company &&
+                    year &&
+                    typeof isPrimary === "boolean"
+                  ) {
+                    onSumbitEdit({ _id, model, company, year, isPrimary });
+                  }
+                }}
+              />{" "}
+            </Tooltip>
           </>
         )}
       </Space>

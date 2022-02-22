@@ -30,7 +30,7 @@ export const Vehicle = ({
       <Divider />
       <div className="card-container">
         <div className="info-container">
-          <Tooltip title="This is your primary vehicle">
+          <Tooltip title="Selected Primary Vehicle">
             {isPrimary ? (
               <RightSquareTwoTone
                 style={{ fontSize: "25px", alignSelf: "center" }}

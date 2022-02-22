@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
-import AddVehicle from "./AddVehicle.component";
+import AddVehicle from "./AddEditVehicle.component";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import axios from "../util/api";
-import Vehicle from "./Vehicle.component";
+import Vehicle from "./VehicleInfoCard.component";
 import { Divider, Typography, message, Button } from "antd";
 
 export interface VehicleInterface {
@@ -26,6 +26,7 @@ const Home = () => {
     [vehicles]
   );
 
+  // Get Vehicles When component mounts
   useEffect(() => {
     let vehicleList: any[] = [];
     const fetchData = async () => {
@@ -36,7 +37,7 @@ const Home = () => {
         });
         vehicleList = result.data.data.vehicles;
       } catch (e) {
-        message.error("Failed to load vehicles");
+        message.error("Internal Error, Failed to load vehicles");
         return;
       }
 
@@ -53,6 +54,7 @@ const Home = () => {
     fetchData();
   }, []);
 
+  // Clear User Context and make cookies expired
   const onLogout = () => {
     setUser("");
     document.cookie =
@@ -85,7 +87,9 @@ const Home = () => {
 
   const onDelete = async (_id: string) => {
     if (primaryVehicleId === _id) {
-      message.error("You can not remove a primary vehicle");
+      message.error(
+        "Please add or update your primary vehicle, before removing it"
+      );
       return;
     }
     try {
@@ -94,7 +98,7 @@ const Home = () => {
         withCredentials: true,
       });
     } catch (e) {
-      message.error("Failed to delete vehicle");
+      message.error("Internal Error, Failed to delete the vehicle");
       return;
     }
 
@@ -105,6 +109,7 @@ const Home = () => {
   const onSubmitEdit = async (
     editVehicle: Omit<VehicleInterface, "isEditMode">
   ) => {
+    //If Vehicle is set as Primary, User should not be able to delete it.
     if (
       editVehicle._id === primaryVehicleId &&
       editVehicle.isPrimary === false
@@ -112,7 +117,9 @@ const Home = () => {
       message.warning("You need at least one primary vehicle");
       editVehicle.isPrimary = true;
     }
-    let updatedList;
+    let updatedList = [...vehicles];
+
+    // If a new vehicle is set as Primary, update the previously set Primary vehicle.
     if (editVehicle.isPrimary && editVehicle._id !== primaryVehicleId) {
       const vehicle = vehicles.find(
         (vehicle) => vehicle._id === primaryVehicleId
@@ -142,7 +149,7 @@ const Home = () => {
             }
           });
         } catch (e) {
-          message.error("failed to update the vehicle information");
+          message.error("Internal Error, Failed to update vehicle");
           return;
         }
       }
@@ -181,6 +188,7 @@ const Home = () => {
           return vehicle;
         }
       });
+      console.log(updatedList);
       if (updatedList) {
         setVehicles(updatedList);
       }
@@ -198,7 +206,7 @@ const Home = () => {
   }: Omit<VehicleInterface, "isEditMode">) => {
     if (!company || !year || typeof isPrimary === "undefined" || !model) {
       message.warning(
-        "Please fill in all the details before adding the vehicle"
+        "Please fill all the details before adding a new vehicle"
       );
       return;
     }
@@ -238,7 +246,7 @@ const Home = () => {
       });
       setVehicles([...updatedList, newVehicle]);
     } catch (e) {
-      message.error("Failed to add a new vehicle");
+      message.error("Internal Error, Failed to add a new vehicle");
       return;
     }
   };

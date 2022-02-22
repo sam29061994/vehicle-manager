@@ -83,22 +83,7 @@ const Login = () => {
       }
     }
   };
-
-  //   useEffect(() => {
-  //     const fetch = async () => {
-  //       const result = await axios.post("/user/signin", {
-  //         headers: { "Content-Type": "application/json" },
-  //         withCredentials: true,
-  //       });
-  //       const {
-  //         data: { user },
-  //       } = result.data;
-  //       setUser(user);
-  //       navigate("/");
-  //     };
-  //     fetch();
-  //   }, []);
-
+  // Focus the first input field when component mounts
   useEffect(() => {
     usernameRef.current?.focus();
   }, []);

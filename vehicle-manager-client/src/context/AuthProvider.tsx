@@ -1,11 +1,10 @@
 import {
   createContext,
-  useState,
   Dispatch,
   SetStateAction,
   useMemo,
 } from "react";
-import useLocalStorage from "./useLocalStorage";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 interface AuthContextInterface {
   user: string;

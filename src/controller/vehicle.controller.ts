@@ -26,7 +26,7 @@ export const createVehicleHandler = async (req: Request, res: Response) => {
     });
   }
   return res.status(401).json({
-    status: "failed",
+    status: "error",
     message: "Vehicle limit exceeded",
   });
 };
@@ -46,19 +46,24 @@ export const updateVehicleHandler = async (req: Request, res: Response) => {
   if (String(vehicle.user) !== userId) {
     return res.sendStatus(401);
   }
-
-  const updatedVehicle = await findAndUpdateVehicle(
-    { _id: vehicleId },
-    update,
-    { new: true }
-  );
-
-  res.status(203).json({
-    status: "success",
-    data: {
-      updatedVehicle,
-    },
-  });
+  try {
+    const updatedVehicle = await findAndUpdateVehicle(
+      { _id: vehicleId },
+      update,
+      { new: true }
+    );
+    res.status(203).json({
+      status: "success",
+      data: {
+        updatedVehicle,
+      },
+    });
+  } catch (e) {
+    res.status(500).json({
+      status: "error",
+      error: e,
+    });
+  }
 };
 
 export const getVehicleHandler = async (req: Request, res: Response) => {
@@ -101,15 +106,19 @@ export const deleteVehicleHandler = async (req: Request, res: Response) => {
     return res.sendStatus(404);
   }
 
-  console.log("vehicle", vehicle);
-
   if (String(vehicle.user) !== String(userId)) {
     return res.sendStatus(401);
   }
+  try {
+    await deleteVehicle({ _id: vehicleId });
 
-  await deleteVehicle({ _id: vehicleId });
-
-  return res.status(200).send({
-    status: "success",
-  });
+    return res.status(200).send({
+      status: "success",
+    });
+  } catch (e) {
+    res.status(500).json({
+      status: "error",
+      error: e,
+    });
+  }
 };

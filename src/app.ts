@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: function (origin = "", callback) {
-      if (allowedOrigins.indexOf(origin) !== -1 || true) {
+      if (allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));

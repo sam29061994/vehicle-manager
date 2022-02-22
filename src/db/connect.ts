@@ -1,9 +1,9 @@
 import mangoose from "mongoose";
+import config from "config";
 import log from "../logger";
 
-
 const connect = async () => {
-  const dbURI = process.env.DATABASE_LOCAL as string;
+  const dbURI = config.get("dbUri") as string;
 
   try {
     await mangoose.connect(dbURI, {
