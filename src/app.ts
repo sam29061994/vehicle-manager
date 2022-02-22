@@ -2,6 +2,9 @@ import express from "express";
 import config from "config";
 import log from "./logger";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
+import mongoSanitize from "express-mongo-sanitize";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import connect from "./db/connect";
@@ -16,6 +19,15 @@ const allowedOrigins = config.get("allowedOrigins") as string[];
 dotenv.config({ path: "./config.env" });
 
 const app = express();
+app.use(helmet());
+
+//Limit requests from same api
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many requests from this IP, please try again in an hour",
+});
+app.use("/api", limiter);
 
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement
@@ -36,6 +48,9 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+//Data sanitization agains NOSQL query injection
+app.use(mongoSanitize());
 
 app.get("/healthcheck", (req, res) => res.send(200));
 

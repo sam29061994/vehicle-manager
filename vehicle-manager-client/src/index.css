@@ -14,7 +14,6 @@ html {
 }
 
 body {
-    min-height: 100vh;
     background: rgb(2, 0, 36);
     background: radial-gradient(
     circle,
@@ -22,10 +21,11 @@ body {
     rgba(30, 54, 59, 1) 0%,
     rgba(93, 93, 116, 1) 100%
   );
+  max-height: 70vh;
 }
 
 .register-form, .login-form {
-  width: 40%;
+  width: 30%;
 }
 
 .register-form, .login-form, .homepage {
@@ -33,12 +33,12 @@ body {
   padding: 35px 20px;
   border-radius: 5px;
   background: #fff;
-  margin: 15% auto;
+  margin: 10% auto;
 }
 
 .homepage {
-  max-width: 1000px;
-  min-height: 60%;
+  width: 55%;
+  min-height: 55vh;
   padding: 30px 60px 30px ;
 
 }
