@@ -8,15 +8,26 @@ import {
 
 export const createUserHandler = async (req: Request, res: Response) => {
   try {
-    const user = await createUser(req.body);
+    const user = await findUser({ email: req.body.email });
+    if (user) {
+      res.status(409).json({
+        status: "error",
+        error: "User already exist",
+      });
+    }
+        
+    const newUser = await createUser(req.body);
     res.status(201).json({
       status: "success",
       data: {
-        user,
+        user: newUser,
       },
     });
   } catch (e) {
-    res.status(409).send((e as Error).message);
+    res.status(500).json({
+      status: "error",
+      error: e,
+    });
   }
 };
 

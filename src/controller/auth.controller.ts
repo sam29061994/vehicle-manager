@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { signJWT } from "../util";
 import config from "config";
 import {
-  reIssueAccessToken,
   createSession,
   createAccessToken,
   deleteSession,
@@ -34,12 +33,32 @@ export const createUserSessionHandler = async (req: Request, res: Response) => {
     expiresIn: config.get("refreshTokenTtl"), // 1 year
   });
 
+  const refreshTokenOptions = {
+    httpOnly: true,
+    sameSite: "strict" as "strict",
+    maxAge: 24 * 60 * 60 * 1000,
+    domain: "localhost",
+    secure: false,
+  };
+
+  const accessTokenOptions = {
+    httpOnly: true,
+    sameSite: "strict" as "strict",
+    maxAge: 24 * 60 * 60 * 1000,
+    domain: "localhost",
+    secure: false,
+  };
+
+  res.cookie("refreshToken", refreshToken, refreshTokenOptions);
+  res.cookie("accessToken", accessToken, accessTokenOptions);
+
   // send refresh & access token back
-  return res.status(200).send({
+  return res.status(200).json({
     status: "success",
     data: {
       accessToken,
       refreshToken,
+      user: user.name,
     },
   });
 };
@@ -48,7 +67,6 @@ export const invalidateUserSessionHandler = async (
   req: Request,
   res: Response
 ) => {
-  console.log("req", req);
   const sessionId = (req as any).user.session;
 
   await deleteSession({ _id: sessionId });

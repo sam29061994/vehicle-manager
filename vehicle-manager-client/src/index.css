@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+@import '~antd/dist/antd.css';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'Nunito', sans-serif;
+    font-size: 22px;
+    color: #fff;
+}
+
+body {
+    min-height: 100vh;
+    background: rgb(2, 0, 36);
+    background: radial-gradient(
+    circle,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(30, 54, 59, 1) 0%,
+    rgba(93, 93, 116, 1) 100%
+  );
+    padding: 40px 40px;
+}
+
+.register-form, .login-form, .homepage {
+  width: 40%;
+  border: 1px solid #dfdfdf;
+  padding: 20px;
+  border-radius: 5px;
+  background: #fff;
+  margin: auto;
+  margin-top: 10%;
+}
+
+.homepage {
+  min-height: 50vh;
+  min-width: 60vw;
+  padding: 30px 60px 30px ;
+
+}
+
+.site-page-header {
+  text-align: left;
+  font-size: 35px; 
+}
+
+.card {
+ margin: 10px 120px 0px 10px;
+ padding: 20px;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  font-size:20px;
+  align-items: center;
+
+}
+
+
+
+.card-container .info-container {
+  flex: 1 1 60%;
+  min-width: 25ch;
+  display: flex;
+  justify-content: flex-start;
+}
+
+
+.card-container .info-container span {
+ padding: 0 30px;
+}
+
+.item {
+  flex-basis: 170px;
+}
+
+.card-container .action-container {
+   flex: 1 1 30%;
+   justify-self: flex-end;
+   min-width: 15ch;
+}
+

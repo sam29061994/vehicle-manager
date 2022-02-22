@@ -1,5 +1,6 @@
 import { AnySchema } from "yup";
 import { decodeJWT } from "../util";
+import config from "config";
 import { Request, Response, NextFunction } from "express";
 import { reIssueAccessToken } from "../service/auth.service";
 import log from "../logger";
@@ -21,6 +22,19 @@ export const validate =
     }
   };
 
+export const alloweCredentials = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const allowedOrigins = config.get("allowedOrigins") as string[];
+  const origin = req.headers.origin as string;
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Credentials", "true");
+  }
+  next();
+};
+
 export const requiresUser = async (
   req: Request,
   res: Response,
@@ -40,19 +54,23 @@ export const extractUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const accessToken =
+  let accessToken =
     req.headers?.authorization && req.headers.authorization.startsWith("Bearer")
       ? req.headers.authorization.split(" ")[1]
       : null;
+  if (!accessToken) {
+    accessToken = req.cookies.accessToken;
+  }
 
   if (!accessToken) return next();
 
   const { user, expired } = decodeJWT(accessToken);
-  console.log(user);
 
   if (user) {
     // @ts-ignore
     req.user = user;
+    // @ts-ignore
+    console.log("reqq", req.user);
 
     return next();
   }
@@ -60,6 +78,9 @@ export const extractUser = async (
 
   if ("x-refresh" in req.headers) {
     refreshToken = req.headers["x-refresh"] as string;
+  }
+  if (!refreshToken) {
+    refreshToken = req.cookies.refreshToken;
   }
 
   if (expired && refreshToken) {

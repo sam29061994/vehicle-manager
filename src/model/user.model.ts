@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide your password"],
       minlength: 8,
+      maxLength: 24,
       select: false,
     },
     createdAt: Date,

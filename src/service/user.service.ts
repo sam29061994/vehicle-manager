@@ -13,16 +13,16 @@ export const createUser = async (input: DocumentDefinition<UserDocument>) => {
 };
 
 export const getAllUsers = async () => {
-  const users = await User.find();
+  const users = await User.find().exec();
   return users;
 };
 
 export const deleteUser = async (query: FilterQuery<UserDocument>) => {
-  return User.deleteOne(query);
+  return User.deleteOne(query).exec();
 };
 
 export const findUser = async (query: FilterQuery<UserDocument>) => {
-  return User.findOne(query).lean();
+  return User.findOne(query).lean().exec();
 };
 
 export async function validatePassword({
@@ -32,7 +32,7 @@ export async function validatePassword({
   email: UserDocument["email"];
   password: string;
 }) {
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email }).select("+password").exec();
 
   if (!user) {
     return false;

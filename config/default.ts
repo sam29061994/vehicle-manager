@@ -1,4 +1,4 @@
-export default  {
+export default {
   port: 1337,
   host: "localhost",
   dbUri: "mongodb://localhost:27017/rest-api",
@@ -20,5 +20,5 @@ export default  {
   +0fk592vlHggCWYQ6QJANZzno1FwUOjtGLeKm83ZGdbo3K+00i25FmBgB2d0uAtk
   noxFVOjsY+eSXHZqNybrhWRAzutSnpz/QEf/7Vg97g==
   -----END CERTIFICATE-----`,
-}
-
+  allowedOrigins: ["http://localhost:3000"],
+};
