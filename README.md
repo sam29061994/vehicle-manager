@@ -26,10 +26,6 @@ the [`npm init` command](https://docs.npmjs.com/creating-a-package-json-file).
 Installation is done using the
 [`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
 
-
-
-
-
 ## Quick Start
 
 Install dependencies:
@@ -44,14 +40,11 @@ Start the server:
 $ npm dev
 ```
 
-View the website at: http://localhost:1337
-
-
-
+Server will listen on : http://localhost:1337
 
 ## License
 
-  [MIT](LICENSE)
+[MIT](LICENSE)
 
 [ci-image]: https://img.shields.io/github/workflow/status/expressjs/express/ci/master.svg?label=linux
 [ci-url]: https://github.com/expressjs/express/actions?query=workflow%3Aci
